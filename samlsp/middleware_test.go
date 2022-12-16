@@ -23,8 +23,8 @@ import (
 	is "gotest.tools/assert/cmp"
 	"gotest.tools/golden"
 
-	"github.com/crewjam/saml"
-	"github.com/crewjam/saml/testsaml"
+	"github.com/muir/saml"
+	"github.com/muir/saml/testsaml"
 )
 
 type MiddlewareTest struct {
@@ -411,7 +411,8 @@ func TestMiddlewareCanParseResponse(t *testing.T) {
 	assert.Check(t, is.DeepEqual([]string{
 		"saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6=; Domain=15661444.ngrok.io; Expires=Thu, 01 Jan 1970 00:00:01 GMT",
 		"ttt=" + test.expectedSessionCookie + "; " +
-			"Path=/; Domain=15661444.ngrok.io; Max-Age=7200; HttpOnly; Secure"},
+			"Path=/; Domain=15661444.ngrok.io; Max-Age=7200; HttpOnly; Secure",
+	},
 		resp.Header()["Set-Cookie"]))
 }
 

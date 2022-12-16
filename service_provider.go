@@ -23,7 +23,7 @@ import (
 	dsig "github.com/russellhaering/goxmldsig"
 	"github.com/russellhaering/goxmldsig/etreeutils"
 
-	"github.com/crewjam/saml/xmlenc"
+	"github.com/muir/saml/xmlenc"
 )
 
 // NameIDFormat is the format of the id
@@ -272,7 +272,6 @@ func (req *AuthnRequest) Redirect(relayState string, sp *ServiceProvider) (*url.
 	if len(sp.SignatureMethod) > 0 {
 		query += "&SigAlg=" + url.QueryEscape(sp.SignatureMethod)
 		signingContext, err := GetSigningContext(sp)
-
 		if err != nil {
 			return nil, err
 		}
@@ -398,7 +397,6 @@ func (sp *ServiceProvider) MakeArtifactResolveRequest(artifactID string) (*Artif
 // MakeAuthenticationRequest produces a new AuthnRequest object to send to the idpURL
 // that uses the specified binding (HTTPRedirectBinding or HTTPPostBinding)
 func (sp *ServiceProvider) MakeAuthenticationRequest(idpURL string, binding string, resultBinding string) (*AuthnRequest, error) {
-
 	allowCreate := true
 	nameIDFormat := sp.nameIDFormat()
 	req := AuthnRequest{
@@ -439,7 +437,7 @@ func GetSigningContext(sp *ServiceProvider) (*dsig.SigningContext, error) {
 		Leaf:        sp.Certificate,
 	}
 	// TODO: add intermediates for SP
-	//for _, cert := range sp.Intermediates {
+	// for _, cert := range sp.Intermediates {
 	//	keyPair.Certificate = append(keyPair.Certificate, cert.Raw)
 	//}
 	keyStore := dsig.TLSCertKeyStore(keyPair)
@@ -479,7 +477,6 @@ func (sp *ServiceProvider) SignArtifactResolve(req *ArtifactResolve) error {
 
 // SignAuthnRequest adds the `Signature` element to the `AuthnRequest`.
 func (sp *ServiceProvider) SignAuthnRequest(req *AuthnRequest) error {
-
 	signingContext, err := GetSigningContext(sp)
 	if err != nil {
 		return err
@@ -1146,7 +1143,7 @@ func (sp *ServiceProvider) SignLogoutRequest(req *LogoutRequest) error {
 		Leaf:        sp.Certificate,
 	}
 	// TODO: add intermediates for SP
-	//for _, cert := range sp.Intermediates {
+	// for _, cert := range sp.Intermediates {
 	//	keyPair.Certificate = append(keyPair.Certificate, cert.Raw)
 	//}
 	keyStore := dsig.TLSCertKeyStore(keyPair)
@@ -1177,7 +1174,6 @@ func (sp *ServiceProvider) SignLogoutRequest(req *LogoutRequest) error {
 
 // MakeLogoutRequest produces a new LogoutRequest object for idpURL.
 func (sp *ServiceProvider) MakeLogoutRequest(idpURL, nameID string) (*LogoutRequest, error) {
-
 	req := LogoutRequest{
 		ID:           fmt.Sprintf("id-%x", randomBytes(20)),
 		IssueInstant: TimeNow(),
@@ -1403,7 +1399,7 @@ func (sp *ServiceProvider) SignLogoutResponse(resp *LogoutResponse) error {
 		Leaf:        sp.Certificate,
 	}
 	// TODO: add intermediates for SP
-	//for _, cert := range sp.Intermediates {
+	// for _, cert := range sp.Intermediates {
 	//	keyPair.Certificate = append(keyPair.Certificate, cert.Raw)
 	//}
 	keyStore := dsig.TLSCertKeyStore(keyPair)

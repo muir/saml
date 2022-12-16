@@ -24,9 +24,9 @@ import (
 	"github.com/beevik/etree"
 	"github.com/golang-jwt/jwt/v4"
 
-	"github.com/crewjam/saml/logger"
-	"github.com/crewjam/saml/testsaml"
-	"github.com/crewjam/saml/xmlenc"
+	"github.com/muir/saml/logger"
+	"github.com/muir/saml/testsaml"
+	"github.com/muir/saml/xmlenc"
 )
 
 type IdentityProviderTest struct {
@@ -455,7 +455,6 @@ func TestIDPCanValidate(t *testing.T) {
 			"</AuthnRequest>"),
 	}
 	assert.Check(t, is.Error(req.Validate(), "cannot find assertion consumer service: file does not exist"))
-
 }
 
 func TestIDPMakeAssertion(t *testing.T) {
@@ -970,7 +969,8 @@ func TestIDPRequestedAttributes(t *testing.T) {
 					},
 				},
 			},
-		}}}
+		},
+	}}
 	assert.Check(t, is.DeepEqual(expectedAttributes, req.Assertion.AttributeStatements))
 }
 

@@ -21,7 +21,7 @@ import (
 	"github.com/beevik/etree"
 	dsig "github.com/russellhaering/goxmldsig"
 
-	"github.com/crewjam/saml/testsaml"
+	"github.com/muir/saml/testsaml"
 )
 
 type ServiceProviderTest struct {
@@ -142,7 +142,6 @@ func TestSPCanProduceMetadataWithBothCerts(t *testing.T) {
 	spMetadata, err := xml.MarshalIndent(s.Metadata(), "", "  ")
 	assert.Check(t, err)
 	golden.Assert(t, string(spMetadata), t.Name()+"_metadata")
-
 }
 
 func TestCanProduceMetadataNoCerts(t *testing.T) {
@@ -1362,7 +1361,7 @@ func TestXswPermutationSevenIsRejected(t *testing.T) {
 	req := http.Request{PostForm: url.Values{}}
 	req.PostForm.Set("SAMLResponse", string(respStr))
 	_, err = s.ParseResponse(&req, []string{"ONELOGIN_4fee3b046395c4e751011e97f8900b5273d56685"})
-	//It's the assertion signature that can't be verified. The error message is generic and always mentions Response
+	// It's the assertion signature that can't be verified. The error message is generic and always mentions Response
 	assert.Check(t, is.Error(err.(*InvalidResponseError).PrivateErr,
 		"cannot validate signature on Assertion: Signature could not be verified"))
 }
@@ -1393,7 +1392,7 @@ func TestXswPermutationEightIsRejected(t *testing.T) {
 	req := http.Request{PostForm: url.Values{}}
 	req.PostForm.Set("SAMLResponse", string(respStr))
 	_, err = s.ParseResponse(&req, []string{"ONELOGIN_4fee3b046395c4e751011e97f8900b5273d56685"})
-	//It's the assertion signature that can't be verified. The error message is generic and always mentions Response
+	// It's the assertion signature that can't be verified. The error message is generic and always mentions Response
 	assert.Check(t, is.Error(err.(*InvalidResponseError).PrivateErr,
 		"cannot validate signature on Assertion: Signature could not be verified"))
 }
@@ -1424,7 +1423,7 @@ func TestXswPermutationNineIsRejected(t *testing.T) {
 	req := http.Request{PostForm: url.Values{}}
 	req.PostForm.Set("SAMLResponse", string(respStr))
 	_, err = s.ParseResponse(&req, []string{"ONELOGIN_4fee3b046395c4e751011e97f8900b5273d56685"})
-	//It's the assertion signature that can't be verified. The error message is generic and always mentions Response
+	// It's the assertion signature that can't be verified. The error message is generic and always mentions Response
 	assert.Check(t, is.Error(err.(*InvalidResponseError).PrivateErr,
 		"cannot validate signature on Assertion: Missing signature referencing the top-level element"))
 }
@@ -1665,7 +1664,6 @@ func TestMakeSignedArtifactResolveRequestWithBogusSignatureMethod(t *testing.T) 
 
 	_, err := sp.MakeArtifactResolveRequest("artifactId")
 	assert.Check(t, is.ErrorContains(err, "invalid signing method bogus"))
-
 }
 
 func TestParseXMLArtifactResponse(t *testing.T) {
