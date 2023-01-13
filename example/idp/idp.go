@@ -4,10 +4,12 @@ import (
 	"crypto"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"flag"
+	"log"
+	"net/http"
 	"net/url"
 
-	"github.com/zenazn/goji"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/crewjam/saml/logger"
@@ -73,6 +75,7 @@ UzreO96WzlBBMtY=
 func main() {
 	logr := logger.DefaultLogger
 	baseURLstr := flag.String("idp", "", "The URL to the IDP")
+	bindAddr := flag.String("bind", ":8000", "Listen address for IdP")
 	flag.Parse()
 
 	baseURL, err := url.Parse(*baseURLstr)
@@ -92,7 +95,8 @@ func main() {
 	}
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("hunter2"), bcrypt.DefaultCost)
-	err = idpServer.Store.Put("/users/alice", samlidp.User{Name: "alice",
+	err = idpServer.Store.Put("/users/alice", samlidp.User{
+		Name:           "alice",
 		HashedPassword: hashedPassword,
 		Groups:         []string{"Administrators", "Users"},
 		Email:          "alice@example.com",
@@ -117,6 +121,8 @@ func main() {
 		logr.Fatalf("%s", err)
 	}
 
-	goji.Handle("/*", idpServer)
-	goji.Serve()
+	err = http.ListenAndServe(*bindAddr, idpServer)
+	if !errors.Is(err, http.ErrServerClosed) {
+		log.Fatal(err)
+	}
 }
